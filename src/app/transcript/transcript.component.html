@@ -1,0 +1,10 @@
+<div class="chatBox" *ngIf="isChatVisible">
+    <form (ngSubmit)="onSubmit()" #chatForm="ngForm">
+        <input type="text" name="message" [(ngModel)]="currentChatValue" required>
+        <input [disabled]="!chatForm.form.valid" type="submit" value="Send">
+    </form>
+
+    <ul *ngFor="let message of chatMessages">
+        <li>{{message}}</li>
+    </ul>
+</div>
