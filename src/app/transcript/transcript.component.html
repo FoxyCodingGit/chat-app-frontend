@@ -1,10 +1,10 @@
 <div class="chatBox" *ngIf="isChatVisible">
     <form (ngSubmit)="onSubmit()" #chatForm="ngForm">
-        <input type="text" name="message" [(ngModel)]="currentChatValue" required>
+        <input type="text" name="message" [(ngModel)]="chatInputValue" required>
         <input [disabled]="!chatForm.form.valid" type="submit" value="Send">
     </form>
 
     <ul *ngFor="let message of chatMessages">
-        <li [ngClass]="{'message' : message.Type == 0, 'utility' : message.Type == 1}"><b class="sender">{{message.sender}}</b>{{message.body}}</li>
+        <li [ngClass]="{'message' : message.type == 0, 'utility' : message.type == 1}"><b class="sender">{{message.sender}}</b>{{message.body}}</li>
     </ul>
 </div>
