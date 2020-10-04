@@ -5,6 +5,6 @@
     </form>
 
     <ul *ngFor="let message of chatMessages">
-        <li>{{message}}</li>
+        <li [ngClass]="{'message' : message.Type == 0, 'utility' : message.Type == 1}"><b class="sender">{{message.sender}}</b>{{message.body}}</li>
     </ul>
 </div>
