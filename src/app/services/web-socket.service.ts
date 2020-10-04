@@ -9,11 +9,28 @@ import { UserService } from './user.service';
 export class WebSocketService {
   // TODO: public so can apply onMessage function on other class. If able to pass through a setter would be great.
   public webSocket: WebSocket = new WebSocket('wss://localhost:44363/chat');
+  private static readonly messageComponentSeparator: string = '|';
+  private static readonly allMessagesResponseSeperator: string = '~';
 
   constructor(private userService: UserService) { }
 
+  public static isAllMessagesResponse(repsonse: string): boolean {
+    return repsonse.indexOf(WebSocketService.allMessagesResponseSeperator) > -1;
+  }
+
+  public static allMessagesResponseMapping(allMessagesResponse: string): Message[] {
+    let messages: Message[] = []; 
+
+    let split = allMessagesResponse.split(WebSocketService.allMessagesResponseSeperator);
+    split.forEach(message => {
+      messages.push(this.messageMapping(message));
+    });
+
+    return messages;
+  }
+
   public static messageMapping(message: string): Message {
-    let messageComponents = message.split('|', 3);
+    let messageComponents = message.split(WebSocketService.messageComponentSeparator, 3);
     return { type: this.getMessageType(messageComponents[0]), sender: messageComponents[1], body: messageComponents[2] };
   }
 
@@ -29,7 +46,8 @@ export class WebSocketService {
   }
 
   private generateMessageInAPIFormat(messageType: MessageType, body: string): string {
-    let messageSplitSymbol = '|';
-    return MessageType[messageType] + messageSplitSymbol + this.userService.getUser().username + messageSplitSymbol + body;
+    return MessageType[messageType] + WebSocketService.messageComponentSeparator +
+      this.userService.getUser().username + WebSocketService.messageComponentSeparator
+      + body;
   }
 }
