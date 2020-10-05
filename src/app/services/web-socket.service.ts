@@ -26,9 +26,9 @@ export class WebSocketService {
   }
 
   public static allMessagesResponseMapping(allMessagesResponse: string): Message[] {
-    let messages: Message[] = [];
+    const messages: Message[] = [];
 
-    let split = allMessagesResponse.split(WebSocketService.allMessagesResponseSeperator);
+    const split = allMessagesResponse.split(WebSocketService.allMessagesResponseSeperator);
     split.forEach(message => {
       messages.push(this.messageMapping(message));
     });
@@ -37,16 +37,12 @@ export class WebSocketService {
   }
 
   public static messageMapping(message: string): Message {
-    let messageComponents = message.split(WebSocketService.messageComponentSeparator, 3);
+    const messageComponents = message.split(WebSocketService.messageComponentSeparator, 3);
     return { type: this.getMessageType(messageComponents[0]), sender: messageComponents[1], body: messageComponents[2] };
   }
 
-  public sendMessage(messageType: MessageType, body: string) {
-    this.webSocket.send(this.generateMessageInAPIFormat(messageType, body));
-  }
-
   private static getMessageType(keyword: string): MessageType {
-    if (keyword == 'UTILITY') {
+    if (keyword === 'UTILITY') {
       return MessageType.UTILITY;
     }
     return MessageType.MESSAGE;
@@ -54,6 +50,10 @@ export class WebSocketService {
 
   private static isJustWhitespace(message: string): boolean {
     return message.replace(/\s/g, '').length === 0;
+  }
+
+  public sendMessage(messageType: MessageType, body: string): void {
+    this.webSocket.send(this.generateMessageInAPIFormat(messageType, body));
   }
 
   private generateMessageInAPIFormat(messageType: MessageType, body: string): string {

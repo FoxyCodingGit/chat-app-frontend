@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { UserState } from '../enums/UserState';
 import { Message } from '../models/Message';
@@ -11,9 +11,9 @@ import { User } from '../models/user';
   templateUrl: './transcript.component.html',
   styleUrls: ['./transcript.component.scss']
 })
-export class TranscriptComponent implements OnInit {
+export class TranscriptComponent implements OnInit, AfterViewChecked {
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
-  public isChatVisible: boolean = false;
+  public isChatVisible = false;
   public user: User;
   public chatMessages: Message[] = [];
 
@@ -25,15 +25,15 @@ export class TranscriptComponent implements OnInit {
     this.scrollToBottom();
   }
 
-  ngAfterViewChecked() {
+  ngAfterViewChecked(): void {
       this.scrollToBottom();
   }
 
   private setupWebSocketOnMessageFunc(): void {
-    var componentScope = this;
-    this.webSocketService.webSocket.onmessage = function(messageEvent) {
+    const componentScope = this;
+    this.webSocketService.webSocket.onmessage = (messageEvent) => {
       componentScope.populateTranscript(messageEvent);
-    }
+    };
   }
 
   private populateTranscript(messageEvent: MessageEvent): void {
@@ -48,7 +48,7 @@ export class TranscriptComponent implements OnInit {
 
   private setupUserSubscription(): void {
     this.userService.getUserObservable().subscribe((user) => {
-      if (user.userState == UserState.IN_CHAT) {
+      if (user.userState === UserState.IN_CHAT) {
         this.isChatVisible = true;
         this.user = user;
         this.webSocketService.sendMessage(MessageType.ALL_MESSAGES, '');
