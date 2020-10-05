@@ -2,5 +2,6 @@ export enum MessageType {
     MESSAGE,
     UTILITY,
     ALL_MESSAGES,
-    ASSIGN_USER
+    ASSIGN_USER,
+    CLOSE
 }

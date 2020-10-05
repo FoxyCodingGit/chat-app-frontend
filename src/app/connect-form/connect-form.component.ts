@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { UserState } from '../enums/UserState';
 import { WebSocketService } from '../services/web-socket.service';
-import { MessageType } from '../enums/MessageType';
 
 @Component({
   selector: 'app-connect-form',
@@ -22,7 +21,7 @@ export class ConnectFormComponent {
     this.isUsernameSet = true;
 
     if (!this.sentAssignUser) {
-      this.webSocketService.sendMessage(MessageType.ASSIGN_USER, '');
+      this.webSocketService.sendAssignUserMessage();
       this.sentAssignUser = true;
     }
   }

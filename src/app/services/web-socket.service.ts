@@ -45,6 +45,15 @@ export class WebSocketService {
     if (keyword === 'UTILITY') {
       return MessageType.UTILITY;
     }
+    if (keyword === 'ALL_MESSAGES') {
+      return MessageType.ALL_MESSAGES;
+    }
+    if (keyword === 'ASSIGN_USER') {
+      return MessageType.ASSIGN_USER;
+    }
+    if (keyword === 'CLOSE') {
+      return MessageType.CLOSE;
+    }
     return MessageType.MESSAGE;
   }
 
@@ -52,8 +61,28 @@ export class WebSocketService {
     return message.replace(/\s/g, '').length === 0;
   }
 
-  public sendMessage(messageType: MessageType, body: string): void {
-    this.webSocket.send(this.generateMessageInAPIFormat(messageType, body));
+  public sendMessage(body: string): void {
+    this.webSocket.send(this.generateMessageInAPIFormat(MessageType.MESSAGE, body));
+  }
+
+  public sendJoinChatMessage(): void {
+    this.webSocket.send(this.generateMessageInAPIFormat(MessageType.UTILITY, 'has joined the chat'));
+  }
+
+  public sendCloseMessage(): void {
+    this.webSocket.send(this.generateMessageInAPIFormat(MessageType.CLOSE, 'has left the chat'));
+  }
+
+  public sendAllMessagesMessage(): void {
+    this.webSocket.send(this.generateMessageInAPIFormat(MessageType.ALL_MESSAGES, ''));
+  }
+
+  public sendAssignUserMessage(): void {
+    this.webSocket.send(this.generateMessageInAPIFormat(MessageType.ASSIGN_USER, ''));
+  }
+
+  public closeWebSocket(): void {
+    this.webSocket.close();
   }
 
   private generateMessageInAPIFormat(messageType: MessageType, body: string): string {

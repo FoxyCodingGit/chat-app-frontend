@@ -10,15 +10,22 @@ import { WebSocketService } from '../services/web-socket.service';
 export class ChatInputComponent {
   public chatInputValue: string;
   public isChatInputValid = false;
+  public hasLeftChat = false;
 
   constructor(private webSocketService: WebSocketService) { }
 
   public onSubmit(): void {
-    this.webSocketService.sendMessage(MessageType.MESSAGE, this.chatInputValue);
+    this.webSocketService.sendMessage(this.chatInputValue);
     this.chatInputValue = '';
   }
 
   public onChange(value: string): void {
     this.isChatInputValid = WebSocketService.isInputValueValid(this.chatInputValue);
+  }
+
+  public leaveChat(): void {
+    this.webSocketService.sendCloseMessage();
+    this.webSocketService.closeWebSocket();
+    this.hasLeftChat = true;
   }
 }

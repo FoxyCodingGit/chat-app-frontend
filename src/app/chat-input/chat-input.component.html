@@ -1,4 +1,12 @@
-<form (ngSubmit)="onSubmit()" #chatForm="ngForm">
-    <input type="text" name="message" [(ngModel)]="chatInputValue" (ngModelChange)="onChange($event)" required>
-    <input [disabled]="!chatForm.form.valid || !isChatInputValid" type="submit" value="Send">
-</form>
+<div *ngIf="hasLeftChat; else inChat">
+    <p>You have left the chat</p>
+</div>
+<ng-template #inChat>
+    <div class="flex">
+        <form (ngSubmit)="onSubmit()" #chatForm="ngForm">
+            <input type="text" name="message" [(ngModel)]="chatInputValue" (ngModelChange)="onChange($event)" required>
+            <input [disabled]="!chatForm.form.valid || !isChatInputValid" type="submit" value="Send">
+        </form>
+        <button (click)="leaveChat()">Leave the Chat</button>
+    </div>
+</ng-template>

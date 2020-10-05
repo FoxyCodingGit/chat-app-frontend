@@ -4,7 +4,7 @@
         <ul *ngFor="let message of chatMessages">
             <li *ngIf="message.type == 0 && message.sender == user.username; else otherPersonMessage" class="senderMessage">{{message.body}}</li>
             <ng-template #otherPersonMessage>
-                <li [ngClass]="{'utility' : message.type == 1}"><b class="sender">{{message.sender}}</b>{{message.body}}</li>
+                <li [ngClass]="{'utility' : message.type == 1, 'closed' : message.type == 4}"><b class="sender">{{message.sender}}</b>{{message.body}}</li>
             </ng-template>
         </ul>
     </div>

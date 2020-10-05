@@ -4,9 +4,8 @@
 </div>
 <ng-template #usernameNotSet>
     <form (ngSubmit)="onSubmit()" #nameForm="ngForm">
-        <label for="name">Name</label>
         <input type="text" name="name" [(ngModel)]="username" (ngModelChange)="onChange($event)" required>
-        <input [disabled]="!nameForm.form.valid || !isUsernameValid" type="submit" value="SUBMIT">
+        <input [disabled]="!nameForm.form.valid || !isUsernameValid" type="submit" value="Set Username">
     </form>
 </ng-template>
 <br>

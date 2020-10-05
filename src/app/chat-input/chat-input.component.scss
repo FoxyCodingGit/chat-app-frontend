@@ -1,7 +1,16 @@
-form {
-    margin-bottom: 10px;
-}
-
 input[type=text] {
     margin-right: 20px;
+}
+
+p {
+    margin: 0 0 10px 0;
+}
+
+.flex {
+    margin-bottom: 10px;
+    display: flex;
+
+    button {
+        margin-left: 40px;
+    }
 }

@@ -2,7 +2,6 @@ import { Component, ElementRef, OnInit, ViewChild, AfterViewChecked } from '@ang
 import { UserService } from '../services/user.service';
 import { UserState } from '../enums/UserState';
 import { Message } from '../models/Message';
-import { MessageType } from '../enums/MessageType';
 import { WebSocketService } from '../services/web-socket.service';
 import { User } from '../models/user';
 
@@ -51,8 +50,8 @@ export class TranscriptComponent implements OnInit, AfterViewChecked {
       if (user.userState === UserState.IN_CHAT) {
         this.isChatVisible = true;
         this.user = user;
-        this.webSocketService.sendMessage(MessageType.ALL_MESSAGES, '');
-        this.webSocketService.sendMessage(MessageType.UTILITY, 'has joined the chat');
+        this.webSocketService.sendAllMessagesMessage();
+        this.webSocketService.sendJoinChatMessage();
       }
     });
   }
