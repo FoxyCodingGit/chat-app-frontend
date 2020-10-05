@@ -7,10 +7,11 @@ import { UserService } from './user.service';
   providedIn: 'root'
 })
 export class WebSocketService {
-  // TODO: public so can apply onMessage function on other class. If able to pass through a setter would be great.
-  public webSocket: WebSocket = new WebSocket('wss://localhost:44363/chat');
   private static readonly messageComponentSeparator: string = '|';
   private static readonly allMessagesResponseSeperator: string = '~';
+
+  // TODO: public so can apply onMessage function on other class. If able to pass through a setter would be great.
+  public webSocket: WebSocket = new WebSocket('wss://localhost:44363/chat');
 
   constructor(private userService: UserService) { }
 
@@ -18,8 +19,14 @@ export class WebSocketService {
     return repsonse.indexOf(WebSocketService.allMessagesResponseSeperator) > -1;
   }
 
+  public static isInputValueValid(inputValue: string): boolean {
+    return !inputValue.includes(WebSocketService.messageComponentSeparator)
+        && !inputValue.includes(WebSocketService.allMessagesResponseSeperator)
+        && !this.isJustWhitespace(inputValue);
+  }
+
   public static allMessagesResponseMapping(allMessagesResponse: string): Message[] {
-    let messages: Message[] = []; 
+    let messages: Message[] = [];
 
     let split = allMessagesResponse.split(WebSocketService.allMessagesResponseSeperator);
     split.forEach(message => {
@@ -43,6 +50,10 @@ export class WebSocketService {
       return MessageType.UTILITY;
     }
     return MessageType.MESSAGE;
+  }
+
+  private static isJustWhitespace(message: string): boolean {
+    return message.replace(/\s/g, '').length === 0;
   }
 
   private generateMessageInAPIFormat(messageType: MessageType, body: string): string {

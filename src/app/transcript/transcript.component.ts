@@ -36,7 +36,7 @@ export class TranscriptComponent implements OnInit {
     }
   }
 
-  private populateTranscript(messageEvent) {
+  private populateTranscript(messageEvent: MessageEvent): void {
     if (this.isChatVisible) {
       if (WebSocketService.isAllMessagesResponse(messageEvent.data)) {
         this.chatMessages = (WebSocketService.allMessagesResponseMapping(messageEvent.data));
@@ -51,8 +51,8 @@ export class TranscriptComponent implements OnInit {
       if (user.userState == UserState.IN_CHAT) {
         this.isChatVisible = true;
         this.user = user;
-        this.webSocketService.sendMessage(MessageType.ALL_MESSAGES, "");
-        this.webSocketService.sendMessage(MessageType.UTILITY, "has joined the chat");
+        this.webSocketService.sendMessage(MessageType.ALL_MESSAGES, '');
+        this.webSocketService.sendMessage(MessageType.UTILITY, 'has joined the chat');
       }
     });
   }
@@ -60,6 +60,6 @@ export class TranscriptComponent implements OnInit {
   private scrollToBottom(): void {
     try {
         this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-    } catch(err) { }                 
+    } catch (err) { }
   }
 }

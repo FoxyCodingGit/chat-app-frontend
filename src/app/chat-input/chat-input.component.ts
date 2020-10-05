@@ -7,13 +7,18 @@ import { WebSocketService } from '../services/web-socket.service';
   templateUrl: './chat-input.component.html',
   styleUrls: ['./chat-input.component.scss']
 })
-export class ChatInputComponent {  
+export class ChatInputComponent {
   public chatInputValue: string;
+  public isChatInputValid = false;
 
   constructor(private webSocketService: WebSocketService) { }
-  
+
   public onSubmit(): void {
     this.webSocketService.sendMessage(MessageType.MESSAGE, this.chatInputValue);
-    this.chatInputValue = "";
+    this.chatInputValue = '';
+  }
+
+  public onChange(value: string): void {
+    this.isChatInputValid = WebSocketService.isInputValueValid(this.chatInputValue);
   }
 }
