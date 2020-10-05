@@ -1,10 +1,11 @@
-<div class="chatBox" *ngIf="isChatVisible">
-    <form (ngSubmit)="onSubmit()" #chatForm="ngForm">
-        <input type="text" name="message" [(ngModel)]="chatInputValue" required>
-        <input [disabled]="!chatForm.form.valid" type="submit" value="Send">
-    </form>
-
-    <ul *ngFor="let message of chatMessages">
-        <li [ngClass]="{'message' : message.type == 0, 'utility' : message.type == 1}"><b class="sender">{{message.sender}}</b>{{message.body}}</li>
-    </ul>
+<div *ngIf="isChatVisible">
+    <app-chat-input></app-chat-input>
+    <div #scrollMe class="chatBox">
+        <ul *ngFor="let message of chatMessages">
+            <li *ngIf="message.type == 0 && message.sender == user.username; else otherPersonMessage" class="senderMessage">{{message.body}}</li>
+            <ng-template #otherPersonMessage>
+                <li [ngClass]="{'utility' : message.type == 1}"><b class="sender">{{message.sender}}</b>{{message.body}}</li>
+            </ng-template>
+        </ul>
+    </div>
 </div>

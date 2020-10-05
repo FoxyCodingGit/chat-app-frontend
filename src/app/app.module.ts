@@ -5,12 +5,14 @@ import { AppComponent } from './app.component';
 import { TranscriptComponent } from './transcript/transcript.component';
 import { ConnectFormComponent } from './connect-form/connect-form.component';
 import { FormsModule } from '@angular/forms';
+import { ChatInputComponent } from './chat-input/chat-input.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TranscriptComponent,
-    ConnectFormComponent
+    ConnectFormComponent,
+    ChatInputComponent
   ],
   imports: [
     BrowserModule,

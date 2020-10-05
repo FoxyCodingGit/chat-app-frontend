@@ -1,0 +1,4 @@
+<form (ngSubmit)="onSubmit()" #chatForm="ngForm">
+    <input type="text" name="message" [(ngModel)]="chatInputValue" required>
+    <input [disabled]="!chatForm.form.valid" type="submit" value="Send">
+</form>

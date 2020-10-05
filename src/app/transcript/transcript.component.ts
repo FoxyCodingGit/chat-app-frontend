@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { UserState } from '../enums/UserState';
 import { Message } from '../models/Message';
 import { MessageType } from '../enums/MessageType';
 import { WebSocketService } from '../services/web-socket.service';
+import { User } from '../models/user';
 
 @Component({
   selector: 'app-transcript',
@@ -11,20 +12,21 @@ import { WebSocketService } from '../services/web-socket.service';
   styleUrls: ['./transcript.component.scss']
 })
 export class TranscriptComponent implements OnInit {
+  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
   public isChatVisible: boolean = false;
-  public chatInputValue: string;
-  public chatMessages: Message[] = []; 
+  public user: User;
+  public chatMessages: Message[] = [];
 
   constructor(private userService: UserService, private webSocketService: WebSocketService) { }
 
   ngOnInit(): void {
     this.setupWebSocketOnMessageFunc();
     this.setupUserSubscription();
+    this.scrollToBottom();
   }
-  
-  public onSubmit(): void {
-    this.webSocketService.sendMessage(MessageType.MESSAGE, this.chatInputValue);
-    this.chatInputValue = "";
+
+  ngAfterViewChecked() {
+      this.scrollToBottom();
   }
 
   private setupWebSocketOnMessageFunc(): void {
@@ -48,9 +50,16 @@ export class TranscriptComponent implements OnInit {
     this.userService.getUserObservable().subscribe((user) => {
       if (user.userState == UserState.IN_CHAT) {
         this.isChatVisible = true;
+        this.user = user;
         this.webSocketService.sendMessage(MessageType.ALL_MESSAGES, "");
         this.webSocketService.sendMessage(MessageType.UTILITY, "has joined the chat");
       }
     });
+  }
+
+  private scrollToBottom(): void {
+    try {
+        this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+    } catch(err) { }                 
   }
 }

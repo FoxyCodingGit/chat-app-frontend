@@ -9,6 +9,8 @@ export class UserService {
   private user: User;
   private userSubject = new Subject<User>();
 
+  constructor() { }
+
   public getUserObservable(): Observable<User> {
     return this.userSubject.asObservable();
   }
@@ -21,6 +23,4 @@ export class UserService {
     this.user = user;
     this.userSubject.next(user);
   }
-
-  constructor() { }
 }
