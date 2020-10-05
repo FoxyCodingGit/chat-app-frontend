@@ -70,7 +70,7 @@ export class WebSocketService {
   }
 
   public sendCloseMessage(): void {
-    this.webSocket.send(this.generateMessageInAPIFormat(MessageType.CLOSE, ''));
+    this.webSocket.send(this.generateMessageInAPIFormat(MessageType.CLOSE, 'has left the chat'));
   }
 
   public sendAllMessagesMessage(): void {
