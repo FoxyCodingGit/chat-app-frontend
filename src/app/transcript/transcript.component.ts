@@ -36,7 +36,7 @@ export class TranscriptComponent implements OnInit {
     }
   }
 
-  private populateTranscript(messageEvent: MessageEvent<any>) {
+  private populateTranscript(messageEvent) {
     if (this.isChatVisible) {
       if (WebSocketService.isAllMessagesResponse(messageEvent.data)) {
         this.chatMessages = (WebSocketService.allMessagesResponseMapping(messageEvent.data));
